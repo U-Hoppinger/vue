@@ -2,7 +2,11 @@
 import { ref } from "vue";
 const myText = ref("learn");
 const changeText = () => {
-  myText.value = "New text";
+  if (myText.value === "learn") {
+    myText.value = "New text";
+  } else {
+    myText.value = "learn";
+  }
 };
 const isVisible = ref(true);
 </script>
