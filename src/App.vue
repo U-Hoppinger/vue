@@ -3,25 +3,20 @@ import { ref, computed } from "vue";
 import GlobalClass from "./components/GlobalClass.vue";
 import SkillItem from "./components/SkillItem.vue";
 // import BaseCard from "./components/BaseCard.vue";
+import { skillsData } from "./skillsData.js";
 //========================================================
 //LET and CONST
 //========================================================
 const myText = ref("learn");
-const newSkillName = ref("");
 const activeSkillId = ref(1);
+const skills = ref(skillsData);
+const activeSkillData = computed(() => {
+  return skills.value.find((item) => item.id === activeSkillId.value);
+});
 
 const totalSkills = computed(() => {
   return skills.value.length;
 });
-const skills = ref([
-  { id: 1, name: "ME" },
-  { id: 2, name: "SoftSkills" },
-  { id: 3, name: "HurdSkills" },
-  { id: 4, name: "HTML/CSS" },
-  { id: 5, name: "JavaScript" },
-  { id: 6, name: "Vue.js" },
-  { id: 7, name: "Info" },
-]);
 
 const changeText = () => {
   if (myText.value === "learn") {
@@ -39,17 +34,20 @@ const changeText = () => {
 // const removeSkill = (idToRemove) => {
 //   skills.value = skills.value.filter((item) => item.id !== idToRemove);
 // };
+// const newSkillName = ref("");
 </script>
 //========================================================
 <template>
   <div class="main-content">
     <div class="left">
-      <h2>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident dicta
-        eveniet iste velit ad quis sed odio, enim culpa? Veniam culpa
-        consectetur perferendis sequi exercitationem aliquid soluta dicta
-        dolores facilis.
-      </h2>
+      <p class="descriptionText">
+        {{ activeSkillData?.description }}
+      </p>
+      <ul v-if="activeSkillData?.ability" class="menuDescriptionList">
+        <li v-for="point in activeSkillData.ability" :key="point">
+          {{ point }}
+        </li>
+      </ul>
     </div>
 
     <div class="right">
@@ -91,20 +89,41 @@ const changeText = () => {
   justify-content: center;
   align-items: center;
 }
-.left,
-.right {
-  width: 300px;
-  height: 300px;
-}
+
 .left {
   border-right: 1px solid #42b883;
-}
-.right {
+  width: 200px;
+  height: 300px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: flex-end;
+}
+.right {
+  width: 200px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   margin-left: 10px;
 }
+.right li {
+  width: fit-content;
+}
+
+/* .menuDescriptionList {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+} */
+.descriptionText {
+  text-align: right;
+}
+.menuDescriptionList,
+.descriptionText {
+  margin-right: 10px;
+}
+
 .logo {
   display: block;
   margin: 0 auto 2rem;
@@ -124,7 +143,8 @@ li {
   padding: 0;
   margin: 0;
 }
-.menu {
+.menu,
+.menuDescriptionList {
   list-style: none;
 }
 </style>
