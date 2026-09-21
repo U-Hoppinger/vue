@@ -1,39 +1,44 @@
+let id = 0;
 export const skillsData = [
-  { id: 1, name: "ME", description: "Представленная информация карточка" },
   {
-    id: 2,
+    id: id++,
+    name: "ME",
+    description:
+      "Опыта работы в IT компании на 1 и 2 линии клиенсткой поддержки. Работа с оборудованием атол/эвотор ( настройка ), а так же тестирование сайта со стороны клиента.",
+  },
+  {
+    id: id++,
     name: "SoftSkills",
-    description: "",
-    ability: ["one", "two", "three"],
+    description:
+      "Коммуникабельный, отличная работа в команде, а так же многосторонний подход к решению задач. Досконально разбираю каждую ситуацию для поска оптимального решения.",
   },
   {
-    id: 3,
-    name: "HurdSkills",
-    description: "",
-    ability: ["one", "two", "three"],
+    id: id++,
+    name: "HardSkills",
+    description:
+      "Знание и понимание разметки страницы HTML. Работа со стилями разметки CSS. Функциональные копоненты JavaScript. Так же базовые навыки и понимание TS и ООП.",
   },
   {
-    id: 4,
+    id: id++,
     name: "HTML/CSS",
-    description: "",
-    ability: ["one", "two", "three"],
+    description:
+      "Адаптивная верстка(@media, screenreader). Кросплотформеность. Flex/Grid",
   },
   {
-    id: 5,
+    id: id++,
     name: "JavaScript",
-    description: "",
-    ability: ["one", "two", "three"],
+    description:
+      "Асинхронный код (Promise/Promise.all/async/await. Event Loop. ООП, TS. Базовое понимание Canvas + Three.js",
   },
   {
-    id: 6,
+    id: id++,
     name: "Vue.js",
-    description: "",
-    ability: ["one", "two", "three"],
+    description:
+      "Начальный опыт работы с хуками(компоненты жизненого цикла), реактивностью, слушателями(@click) и пропсами(props/defindeProps). ",
   },
   {
-    id: 7,
+    id: id++,
     name: "Info",
-    description: "",
-    ability: ["VK", "INST", "TG", "mail"],
+    description: "TG:@hoppinger_loo",
   },
 ];

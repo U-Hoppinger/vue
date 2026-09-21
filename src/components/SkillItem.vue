@@ -12,7 +12,7 @@ defineEmits(["choose"]);
 </template>
 
 <style scoped>
-li {
+.menu li {
   cursor: pointer;
   padding: 5px 0;
 }
