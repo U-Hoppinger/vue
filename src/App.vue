@@ -7,93 +7,99 @@ import { skillsData } from "./skillsData.js";
 //========================================================
 //LET and CONST
 //========================================================
-const myText = ref("learn");
 const activeSkillId = ref(0);
 const skills = ref(skillsData);
 const isLoaded = ref(false);
+const sandBoxRef = ref(null);
+
+const scrollToSandbox = () => {
+  if (sandBoxRef.value) sandBoxRef.value.scrollIntoView({ behavior: "smooth" });
+};
 
 onMounted(() => {
   isLoaded.value = true;
 });
 
+// вместо резкого появления медленная прогрузка титульной страницы (до прорисовки HTML)
+
 const activeSkillData = computed(() => {
   return skills.value.find((item) => item.id === activeSkillId.value);
-});
-
-const totalSkills = computed(() => {
-  return skills.value.length;
-});
-
-const changeText = () => {
-  if (myText.value === "learn") {
-    myText.value = "New text";
-  } else {
-    myText.value = "learn";
-  }
-};
-// const toggleIsVisible = () => {
-//   isVisible = !isVisible;
-// };
-// const newSkill = () => {
-//   skills.value.push({ id: Date.now(), name: newSkillName.value });
-// };
-// const removeSkill = (idToRemove) => {
-//   skills.value = skills.value.filter((item) => item.id !== idToRemove);
-// };
-// const newSkillName = ref("");
+}); // возвращает данные при нажатии на какой-то скил справа
 </script>
 //========================================================
 <template>
-  <div class="main-content">
-    <Transition name="fade_left">
-      <div class="left" v-if="isLoaded">
-        <Transition name="switch" mode="out-in">
-          <div :key="activeSkillId">
-            <p class="descriptionText">
-              {{ activeSkillData?.description }}
-            </p>
-            <ul v-if="activeSkillData?.ability" class="menuDescriptionList">
-              <li v-for="point in activeSkillData.ability" :key="point">
-                {{ point }}
-              </li>
+  <div class="scroll-container">
+    <section class="screen">
+      <div class="main-content">
+        <Transition name="fade_left">
+          <div class="left" v-if="isLoaded">
+            <Transition name="switch" mode="out-in">
+              <div :key="activeSkillId">
+                <p class="descriptionText">
+                  {{ activeSkillData?.description }}
+                </p>
+                <ul v-if="activeSkillData?.ability" class="menuDescriptionList">
+                  <li v-for="point in activeSkillData.ability" :key="point">
+                    {{ point }}
+                  </li>
+                </ul>
+              </div>
+            </Transition>
+          </div>
+        </Transition>
+        <Transition name="fade_right">
+          <div class="right" v-if="isLoaded">
+            <h2>My skills</h2>
+            <ul class="menu">
+              <SkillItem
+                v-for="item in skills"
+                :key="item.id"
+                :skillName="item.name"
+                :class="{ active: activeSkillId === item.id }"
+                @choose="activeSkillId = item.id"
+              />
             </ul>
           </div>
         </Transition>
       </div>
-    </Transition>
-    <Transition name="fade_right">
-      <div class="right" v-if="isLoaded">
-        <h2>My skills</h2>
-        <ul class="menu">
-          <SkillItem
-            v-for="item in skills"
-            :key="item.id"
-            :skillName="item.name"
-            :class="{ active: activeSkillId === item.id }"
-            @choose="activeSkillId = item.id"
-          />
-          <!--       @click="activeSkillId = item.id" -->
-          <!-- <input
-        type="text"
-        placeholder="Add new skill"
-        v-model="newSkillName"
-        @keydown.enter="newSkill"
-      />
-      <button @click="newSkill">Add</button> -->
-        </ul>
+      <button class="scroll-btn-down" @click="scrollToSandbox">⬇</button>
+    </section>
+    <section class="screen sandBox-screen" ref="sandBoxRef">
+      <div>
+        <div></div>
       </div>
-    </Transition>
+    </section>
   </div>
 </template>
-<!-- @delete="removeSkill(item.id)" -->
-<!-- @choose="activeSkillId = item.id" -->
-<!-- <button @click="changeText">Click me!</button> -->
 //========================================================
 <style scoped>
-/* header {
-  line-height: 1.5;
-} */
-
+/* контейнер магнит */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}
+.screen {
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+}
+.scroll-btn-down {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+/* магнит окончен */
 .main-content {
   display: flex;
   flex-direction: row;
@@ -123,11 +129,6 @@ const changeText = () => {
   width: fit-content;
 }
 
-/* .menuDescriptionList {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-} */
 .descriptionText {
   text-align: center;
 }
@@ -135,11 +136,6 @@ const changeText = () => {
 .descriptionText {
   margin-right: 10px;
 }
-
-/* .logo {
-  display: block;
-  margin: 0 auto 2rem;
-} */
 
 .active {
   color: #42b883;
@@ -182,5 +178,10 @@ li {
 .switch-enter-from,
 .switch-leave-to {
   opacity: 0;
+}
+
+/* вторая вкладка  */
+.sandBox-screen {
+  padding: 2rem;
 }
 </style>
